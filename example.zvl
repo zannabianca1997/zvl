@@ -9,7 +9,7 @@ vector s_float[3] vector_3;
 vector s_float[2] vector_3;
 
 # defining a matrix type
-matrix s_float[2,3] matrix_2x3;
+vector s_float[2,3] matrix_2x3;
 
 # define a function
 vector_2 apply_matrix(matrix_2x3 A, vector_3 v) = A.v;
