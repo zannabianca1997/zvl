@@ -1,0 +1,82 @@
+(* ZVL grammar *)
+(* Comments are removed BEFORE this grammar is parsed *)
+
+(* General file structure *)
+file = { statement };
+statement =
+    (
+        scalar_define |
+        vector_define |
+        matrix_define |
+        function_define
+    ), 
+    ";"
+;
+
+(* Type definitions *)
+scalar_define =
+    "scalar" ,
+    c_type ,
+    type_identifier
+;
+vector_define =
+    "vector" ,
+    c_type ,
+    "[", int , "]",
+    type_identifier
+;
+matrix_define =
+    "vector" ,
+    c_type ,
+    "[", int_literal , ",", int_literal, "]",
+    type_identifier
+;
+
+(* Function definition *)
+function_define =
+    type_identifier,
+    function_identifier,
+    "(", [{ param_spec, "," }, param_spec], ")",
+    "=",
+    expression
+;
+param_spec = type_identifier param_identifier;
+
+(* Expression *)
+expression =
+    expression, "+", term |
+    expression, "-", term |
+    term
+;
+term =
+    term, ".", factor |
+    term, "/", factor |
+    "-", term         |
+    factor
+;
+factor = 
+    "(", expression, ")" |
+    literal              |
+    param_identifier     |
+    function_identifier, "(", [{expression, ","}, expression ], ")"
+;
+
+(* literals *)
+literal =
+    "l", (
+        float_list |
+        float_list_list
+    ), type_identifier
+;
+float_list      = "[", { float_literal, "," }, float_literal, "]" ;
+float_list_list = "[", { float_list, "," }, float_list, "]" ;
+
+(* Identifiers *)
+param_identifier    = c_identifier ;
+type_identifier     = c_identifier ;
+function_identifier = c_identifier ;
+c_identifier  = ? Any valid c identifier ?;
+
+(* Literal constants *)
+int_literal   = ? An int  literal ?;
+float_literal = ? A float literal ?;
