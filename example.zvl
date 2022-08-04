@@ -1,0 +1,25 @@
+# Example of a zvl file
+
+# defining a scalar type
+scalar float  s_float;
+scalar double d_float;
+
+# defining a vector type
+vector s_float[3] vector_3;
+vector s_float[2] vector_3;
+
+# defining a matrix type
+matrix s_float[2,3] matrix_2x3;
+
+# define a function
+vector_2 apply_matrix(matrix_2x3 A, vector_3 v) = A.v;
+
+# more complex functions
+vector_2 lin_transform(matrix_2x3 A, vector_2 b, vector_3 v) = A.v + b;
+
+# function calls
+d_float quad_transform(matrix_2x3 A, vector_3 b, vector_3 v) = lin_transform(A,b,v).lin_transform(A,b,v)
+
+# type are generated if needed
+matrix s_float[4,3] matrix_4x3;
+d_float quad_4_transform(matrix_4x3 A, vector_3 b) = (A.b).(A.b)
